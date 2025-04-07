@@ -1,11 +1,6 @@
-import mongoose, { Document } from 'mongoose';
+import mongoose, { Document, ConnectionStates } from 'mongoose';
 import Product, { IProduct } from '../models/Product';
-// import { MONGO_URI } from '../config/db'; // Removed this import
-import dotenv from 'dotenv';
-
-dotenv.config(); // Load environment variables
-
-const MONGO_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/cmpt315_assignment5_db';
+import {config} from '../config';
 
 // Define a type for the seed data structure, excluding Mongoose Document properties
 type ProductSeedData = Omit<IProduct, keyof Document | '_id'>;
@@ -30,15 +25,22 @@ const seedProducts: ProductSeedData[] = [
 ];
 
 const seedDB = async () => {
-  if (!MONGO_URI) {
-    console.error('MongoDB connection string not found. Please set MONGODB_URI environment variable.');
-    process.exit(1);
-  }
+  // Rely on the connection established in server.ts
   try {
-    await mongoose.connect(MONGO_URI);
-    console.log('MongoDB Connected for seeding...');
-
     // Optional: Clear existing products before seeding
+    // Ensure connection is ready before operations
+    // if (mongoose.connection.readyState !== ConnectionStates.connected) {
+    //   console.log('MongoDB connection not ready for seeding. Waiting...');
+    //   // Optional: Add a short delay or wait for connection event
+    //   // This example proceeds assuming the connection will be ready
+    //   // A more robust implementation might listen for the 'connected' event
+    //   // if called before the connection is fully established elsewhere.
+    //   await new Promise(resolve => setTimeout(resolve, 1000)); // Simple delay
+    //   if (mongoose.connection.readyState !== ConnectionStates.connected) {
+    //     throw new Error('MongoDB connection failed to establish in time for seeding.');
+    //   }
+    // }
+    console.log('Checking if seeding is needed...');
     await Product.deleteMany({});
     console.log('Existing products cleared.');
 
@@ -48,16 +50,13 @@ const seedDB = async () => {
 
   } catch (err: any) {
     console.error('Seeding error:', err.message);
-    process.exit(1);
-  } finally {
-    await mongoose.disconnect();
-    console.log('MongoDB Disconnected after seeding.');
+    // Decide if seeding failure should stop the server.
+    // process.exit(1); // Removed as it might stop the server undesirably
   }
+  // Removed finally block with disconnect
 };
 
 // Execute the seeding function if the script is run directly
-if (require.main === module) {
-  seedDB();
-}
+// seedDB(); // Removed direct execution
 
 export default seedDB; 

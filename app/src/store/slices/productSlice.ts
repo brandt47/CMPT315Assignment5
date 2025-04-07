@@ -52,7 +52,7 @@ export const fetchProducts = createAsyncThunk(
   async (params: api.ProductQueryParams, { rejectWithValue }) => {
     try {
       const response = await api.getProducts(params);
-      return response.data; // Assuming backend returns array of products
+      return response; // Assuming backend returns array of products
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || error.message || 'Failed to fetch products');
     }
@@ -65,7 +65,7 @@ export const fetchProductById = createAsyncThunk(
     async (productId: string, { rejectWithValue }) => {
       try {
         const response = await api.getProductById(productId);
-        return response.data; // Assuming backend returns a single product object
+        return response; // Assuming backend returns a single product object
       } catch (error: any) {
         return rejectWithValue(error.response?.data?.message || error.message || 'Failed to fetch product details');
       }
@@ -92,7 +92,10 @@ const productSlice = createSlice({
   reducers: {
     // Keep synchronous reducers for immediate UI updates like setting filters/sorting
     setProducts: (state, action: PayloadAction<Product[]>) => {
+      console.log('reached fulfilled' + state.items);
       state.items = action.payload;
+      console.log('reached fulfilled' + state.items);
+
       // Reset loading state if needed, but extraReducers handle async loading
     },
     setLoading: (state, action: PayloadAction<ProductState['loading']>) => {
@@ -128,7 +131,9 @@ const productSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchProducts.fulfilled, (state, action: PayloadAction<Product[]>) => {
+        console.log('reached fulfilled' + state.items);
         state.items = action.payload;
+        console.log('reached fulfilled2' + state.items);
         state.loading = 'succeeded';
       })
       .addCase(fetchProducts.rejected, (state, action) => {

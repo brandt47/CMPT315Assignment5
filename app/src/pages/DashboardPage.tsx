@@ -61,7 +61,6 @@ const DashboardPage: React.FC = () => {
 
         try {
             await dispatch(placeOrder(orderPayload)).unwrap();
-            navigate('/orders');
         } catch (err: any) {
             setOrderError(err.message || 'Failed to place order. Please try again.');
         }

@@ -3,6 +3,7 @@ import cors from 'cors';
 import {config} from './config';
 import mongoose from 'mongoose';
 import {registerRoutes} from './routes'
+import seedDB from './utils/seedDb';
 
 const PORT = config.server.port;
 
@@ -15,7 +16,10 @@ app.use(cors());
     try {
         await mongoose.connect(config.mongo.url, {w:"majority", retryWrites:true, authMechanism:"DEFAULT"});
 
+        
         console.log("Connection to MongoDB successfully made");
+
+        await seedDB();
 
         registerRoutes(app);
         

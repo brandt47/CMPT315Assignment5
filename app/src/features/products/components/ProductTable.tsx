@@ -9,7 +9,7 @@ interface ProductTableProps {
     isOrdering?: boolean;
 }
 
-const ProductTable: React.FC<ProductTableProps> = ({ products, onOrder, isOrdering }) => {
+const ProductTable: React.FC<ProductTableProps> = ({ products = [], onOrder, isOrdering }) => {
     const dispatch = useDispatch<AppDispatch>();
     const { column: currentSortColumn, order: currentSortOrder } = useSelector(selectProductSorting);
 

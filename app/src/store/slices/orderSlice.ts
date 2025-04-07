@@ -55,9 +55,9 @@ export const fetchOrders = createAsyncThunk(
       const response = await api.getOrders(params);
       // TODO: Potentially process/map the response data if needed
       // e.g., ensure date formats are consistent
-      return response.data as Order[]; // Assert type
+      return response as Order[]; // Assert type
     } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || error.message || 'Failed to fetch orders');
+      return rejectWithValue(error.response?.message || error.message || 'Failed to fetch orders');
     }
   }
 );
@@ -70,7 +70,7 @@ export const placeOrder = createAsyncThunk(
       // After successful order placement, dispatch action to update product stock locally
       // The backend transaction should have already decremented it, this keeps FE state consistent
       dispatch(updateProductStock({ productId: payload.productId, change: -payload.quantity }));
-      return response.data as Order; // Return the newly created order
+      return response as Order; // Return the newly created order
     } catch (error: any) {
         // Check for specific backend error messages if available
         const errorMessage = error.response?.data?.message || error.message || 'Failed to place order';
@@ -103,7 +103,7 @@ export const cancelOrder = createAsyncThunk(
       dispatch(updateProductStock({ productId: productId, change: orderToCancel.quantity }));
 
       // Return orderId to identify which order was cancelled in the reducer
-      return { orderId, updatedOrderData: response.data }; // Assuming API returns updated order
+      return { orderId, updatedOrderData: response }; // Assuming API returns updated order
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || error.message || 'Failed to cancel order');
     }
@@ -135,7 +135,10 @@ const orderSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchOrders.fulfilled, (state, action: PayloadAction<Order[]>) => {
+        console.log('reached fulfilled' + state.items);
         state.items = action.payload;
+        console.log('reached fulfilled2' + state.items);
+
         state.loading = 'succeeded';
       })
       .addCase(fetchOrders.rejected, (state, action) => {
@@ -149,6 +152,9 @@ const orderSlice = createSlice({
       })
       .addCase(placeOrder.fulfilled, (state, action: PayloadAction<Order>) => {
         // Add the new order to the list (could also re-fetch list)
+        if(state.items === undefined) {
+            state.items = [];
+        }
         state.items.push(action.payload); // Simple push, sorting handled separately
         state.placingOrder = 'succeeded';
       })

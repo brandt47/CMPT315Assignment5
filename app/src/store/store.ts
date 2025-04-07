@@ -9,6 +9,8 @@ import orderReducer from './slices/orderSlice';
 const persistConfig = {
   key: 'root',
   storage,
+  // Blacklist orders.items to prevent serialization issues
+  blacklist: ['orders'],
   // Optionally whitelist or blacklist specific slices
   // whitelist: ['products', 'orders']
 };

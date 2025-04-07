@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api'; // Use environment variable or default
+const API_BASE_URL = 'http://localhost:8000/api'; // Use environment variable or default
 
 // Helper function to handle fetch responses
 const handleResponse = async (response: Response) => {
@@ -9,7 +9,7 @@ const handleResponse = async (response: Response) => {
   // Check if response has content before trying to parse JSON
   const contentType = response.headers.get("content-type");
   if (contentType && contentType.indexOf("application/json") !== -1) {
-      return response.json();
+      return await response.json();
   } else {
       // Handle non-JSON responses, e.g., empty body for PUT/DELETE
       return {}; // Or return null, or text, depending on expectations
@@ -17,13 +17,36 @@ const handleResponse = async (response: Response) => {
 };
 
 // Helper function to construct URL with query parameters
+// const buildUrlWithParams = (baseUrl: string, params: Record<string, any>) => {
+//     const url = new URL(baseUrl, API_BASE_URL.endsWith('/') ? API_BASE_URL : `${API_BASE_URL}/`);
+
+//     console.log(url);
+//     console.log(API_BASE_URL);
+//     // Clean up null/undefined/empty string params before sending
+//     Object.entries(params)
+//         .filter(([, value]) => value !== null && value !== undefined && value !== '')
+//         .forEach(([key, value]) => url.searchParams.append(key, String(value)));
+
+//     console.log(url.toString());
+
+//     return url.toString();
+// };
+
+
 const buildUrlWithParams = (baseUrl: string, params: Record<string, any>) => {
-    const url = new URL(baseUrl, API_BASE_URL.endsWith('/') ? API_BASE_URL : `${API_BASE_URL}/`);
-    // Clean up null/undefined/empty string params before sending
-    Object.entries(params)
-        .filter(([, value]) => value !== null && value !== undefined && value !== '')
-        .forEach(([key, value]) => url.searchParams.append(key, String(value)));
-    return url.toString();
+  // Ensure base URL ends with a slash and path segment starts without one
+  const base = API_BASE_URL.endsWith('/') ? API_BASE_URL : `${API_BASE_URL}/`;
+  const segment = baseUrl.startsWith('/') ? baseUrl.slice(1) : baseUrl;
+  const fullUrlString = base + segment;
+
+  const url = new URL(fullUrlString); // Create URL object from the full string
+
+  // Clean up null/undefined/empty string params before sending
+  Object.entries(params)
+      .filter(([, value]) => value !== null && value !== undefined && value !== '')
+      .forEach(([key, value]) => url.searchParams.append(key, String(value)));
+      console.log(url.toString());
+  return url.toString();
 };
 
 // --- Product API ---

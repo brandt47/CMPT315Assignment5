@@ -21,7 +21,7 @@ const formatDate = (dateString: string) => {
     }
 };
 
-const OrderTable: React.FC<OrderTableProps> = ({ orders, onSort }) => {
+const OrderTable: React.FC<OrderTableProps> = ({ orders = [], onSort }) => {
     const { column: currentSortColumn, order: currentSortOrder } = useSelector(selectOrderSorting);
 
     const handleSortClick = (column: SortableOrderColumn) => {
