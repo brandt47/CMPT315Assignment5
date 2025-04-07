@@ -50,14 +50,14 @@
 
 **Frontend Implementation - Pages & Components**
 
-- [ ] `app/src/features/products/components/ProductTable.tsx`: Create a reusable table component to display products with sortable columns. It should accept product data and sorting state/handlers as props. Indicate/disable ordering for zero-stock items.
-- [ ] `app/src/features/products/components/ProductFilter.tsx`: Create a component with a category dropdown and min/max price inputs. It should dispatch Redux actions to update filter state.
-- [ ] `app/src/pages/DashboardPage.tsx`: Implement the main dashboard page. Fetch products using a Redux thunk/async action based on current filter/sort state. Display `ProductFilter` and `ProductTable`. Handle navigation to the detail page on row click.
-- [ ] `app/src/pages/OrderDetailPage.tsx`: Implement the order detail page. Fetch product details based on the `productId` route parameter. Display product info.
-- [ ] `app/src/features/orders/components/OrderForm.tsx`: Create the order form component within `OrderDetailPage` (quantity, email, delivery date picker). Add validation.
-- [ ] `app/src/pages/OrderDetailPage.tsx`: Handle form submission: dispatch a Redux thunk/async action to call the `POST /orders` API. On success, redirect to the `/orders` page and potentially refresh product stock data.
-- [ ] `app/src/features/orders/components/OrderTable.tsx`: Create a reusable table component to display orders with sortable columns (including email). Accept order data and sorting state/handlers as props.
-- [ ] `app/src/features/orders/components/CancelOrderButton.tsx`: Create a button component within `OrderTable` rows. It should only be visible if the delivery date condition is met. On click, it dispatches a thunk/action to call `PUT /orders/cancel/:id`.
-- [ ] `app/src/pages/OrdersListPage.tsx`: Implement the orders list page. Fetch all orders using a Redux thunk/async action based on sorting state. Display the `OrderTable`.
-- [ ] `app`: Implement API service functions (e.g., using Axios) to interact with all backend endpoints (`getProducts`, `postOrder`, `getOrders`, `cancelOrder`).
+- [x] `app/src/features/products/components/ProductTable.tsx`: Create a reusable table component to display products with sortable columns. It should accept product data and sorting state/handlers as props. Indicate/disable ordering for zero-stock items.
+- [x] `app/src/features/products/components/ProductFilter.tsx`: Create a component with a category dropdown and min/max price inputs. It should dispatch Redux actions to update filter state.
+- [x] `app/src/pages/DashboardPage.tsx`: Implement the main dashboard page. Fetch products using a Redux thunk/async action based on current filter/sort state. Display `ProductFilter` and `ProductTable`. Handle navigation to the detail page on row click.
+- [x] `app/src/pages/OrderDetailPage.tsx`: Implement the order detail page. Fetch product details based on the `productId` route parameter. Display product info.
+- [x] `app/src/features/orders/components/OrderForm.tsx`: Create the order form component within `OrderDetailPage` (quantity, email, delivery date picker). Add validation.
+- [x] `app/src/pages/OrderDetailPage.tsx`: Handle form submission: dispatch a Redux thunk/async action to call the `POST /orders` API. On success, redirect to the `/orders` page and potentially refresh product stock data.
+- [x] `app/src/features/orders/components/OrderTable.tsx`: Create a reusable table component to display orders with sortable columns (including email). Accept order data and sorting state/handlers as props.
+- [x] `app/src/features/orders/components/CancelOrderButton.tsx`: Create a button component within `OrderTable` rows. It should only be visible if the delivery date condition is met. On click, it dispatches a thunk/action to call `PUT /orders/cancel/:id`.
+- [x] `app/src/pages/OrdersListPage.tsx`: Implement the orders list page. Fetch all orders using a Redux thunk/async action based on sorting state. Display the `OrderTable`.
+- [x] `app/src/services/api.ts`: Implement API service functions (e.g., using Axios) to interact with all backend endpoints (`getProducts`, `getProductById`, `postOrder`, `getOrders`, `cancelOrder`).
 - [ ] `app` & `server`: Perform end-to-end testing, refine UI styling, ensure validation messages are displayed correctly, and verify transaction integrity. Check console for errors. 
