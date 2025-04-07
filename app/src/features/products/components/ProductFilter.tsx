@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../store/store';
-import { setFilterCategory, setFilterPriceGte, setFilterPriceLte, selectProductFilters, fetchProducts } from '../../../store/slices/productSlice';
+import { AppDispatch } from '../../../store/store';
+import { setFilterCategory, setFilterPriceGte, setFilterPriceLte, selectProductFilters } from '../../../store/slices/productSlice';
 
 const ProductFilter: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();

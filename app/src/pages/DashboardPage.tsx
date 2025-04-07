@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { AppDispatch } from '../store/store';
-import { fetchProducts, selectAllProducts, selectProductsLoading, selectProductsError, selectProductFilters, selectProductSorting, Product } from '../store/slices/productSlice';
+import { fetchProducts, selectAllProducts, selectProductsLoading, selectProductsError, selectProductFilters, selectProductSorting } from '../store/slices/productSlice';
 import { placeOrder, selectOrdersLoading, selectOrdersError } from '../store/slices/orderSlice';
 import ProductFilter from '../features/products/components/ProductFilter';
 import ProductTable from '../features/products/components/ProductTable';
