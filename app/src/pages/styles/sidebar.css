@@ -1,0 +1,61 @@
+.sidebar {
+    height: 100vh; /* Full viewport height */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .sidebar-container {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .button-container {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Ensure space between top and bottom buttons */
+  }
+  
+  .button-container ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .button-container li {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+  }
+  
+  .button-container li.settings,
+  .button-container li.logout {
+    margin-top: auto; /* Push these items to the bottom */
+  }
+  
+  .sidebar-button {
+    width: 100%;
+    padding: 10px;
+    font-size: 1.2rem;
+    background-color: #ff6347; /* Match the orange color */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: left;
+  }
+  
+  .sidebar-button:hover {
+    background-color: #ff4500; /* Darker shade of orange for hover effect */
+  }

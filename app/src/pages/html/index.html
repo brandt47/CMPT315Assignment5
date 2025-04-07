@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Timer</title>
+    <link rel="stylesheet" href="../styles/index.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Pomodoro Timer</h1>
+        <nav class="nav-links">
+            <a href="login.html">Login</a>
+            <a href="stats.html">Statistics & Tasks</a>
+        </nav>
+        <div class="timer-container">
+            <div class="timer-bar">
+                <span>25:00</span>
+            </div>
+        </div>
+        
+        <div class="timer-buttons">
+            <button>Start</button>
+            <button>Pause</button>
+            <button>Reset</button>
+        </div>
+        
+        <div class="timer-settings">
+            <label>Short Break: <input type="text" placeholder="5 min"></label>
+            <label>Work Time: <input type="text" placeholder="25 min"></label>
+            <label>Long Break: <input type="text" placeholder="15 min"></label>
+        </div>
+        
+        <div class="task-container">
+            <label>Task chosen:</label>
+            <input type="text" placeholder="Selected task" disabled>
+        </div>
+        
+        <div class="checkbox-container">
+            <label>Mark as completed task:</label>
+            <input type="checkbox">
+        </div>
+    </div>
+</body>
+</html>

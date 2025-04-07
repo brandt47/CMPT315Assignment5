@@ -1,0 +1,76 @@
+/* General Styles */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+    font-family: Arial, sans-serif;
+    margin: 0;
+}
+
+/* Centering Content */
+main, .login-container, .stats, .tasks {
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Timer Styling */
+.timer {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: #ff6347;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    margin: 20px auto;
+}
+
+/* Buttons */
+button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    font-size: 1.2rem;
+    background: #ff6347;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #e5533d;
+}
+
+/* Inputs */
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Navigation */
+nav a {
+    margin: 10px;
+    text-decoration: none;
+    color: #ff6347;
+    font-weight: bold;
+}
+
+nav {
+    text-align: center;
+    margin-bottom: 20px;
+}
