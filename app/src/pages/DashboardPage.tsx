@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { AppDispatch } from '../store/store';
 import { fetchProducts, selectAllProducts, selectProductsLoading, selectProductsError, selectProductFilters, selectProductSorting } from '../store/slices/productSlice';
-import { placeOrder, selectOrdersLoading, selectOrdersError } from '../store/slices/orderSlice';
+import { placeOrder, selectOrdersLoading, selectOrdersError, setEmail, selectOrderEmail } from '../store/slices/orderSlice';
 import ProductFilter from '../features/products/components/ProductFilter';
 import ProductTable from '../features/products/components/ProductTable';
 
@@ -17,8 +17,8 @@ const DashboardPage: React.FC = () => {
     const sorting = useSelector(selectProductSorting);
     const loadingOrder = useSelector(selectOrdersLoading);
     const errorOrder = useSelector(selectOrdersError);
+    const email = useSelector(selectOrderEmail);
 
-    const [email, setEmail] = useState('');
     const [deliveryDate, setDeliveryDate] = useState('');
     const [quantity, setQuantity] = useState(1);
     const [orderError, setOrderError] = useState<string | null>(null);
@@ -56,7 +56,6 @@ const DashboardPage: React.FC = () => {
         const orderPayload = {
             productId,
             quantity: quantity,
-            emailId: email,
             deliveryDate,
         };
 
@@ -64,7 +63,13 @@ const DashboardPage: React.FC = () => {
             await dispatch(placeOrder(orderPayload)).unwrap();
             navigate('/orders');
         } catch (err: any) {
-            setOrderError(err.message || 'Failed to place order. Please try again.');
+            if (err.type === 'VALIDATION_ERROR') {
+                setOrderError(err.message);
+            } else if (err.type === 'STOCK_ERROR') {
+                setOrderError(err.message);
+            } else {
+                setOrderError(err.message || 'Failed to place order. Please try again.');
+            }
         }
     };
 
@@ -85,7 +90,7 @@ const DashboardPage: React.FC = () => {
                             type="email"
                             id="email"
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            onChange={(e) => dispatch(setEmail(e.target.value))}
                             placeholder="your.email@example.com"
                             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                             required

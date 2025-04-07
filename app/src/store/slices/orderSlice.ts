@@ -32,6 +32,7 @@ interface OrderState {
     column: keyof Order | 'productName' | 'productPrice' | '' | null; // Add keys for populated fields if needed, allow empty
     order: 'asc' | 'desc';
   };
+  email: string; // Add email state
 }
 
 const initialState: OrderState = {
@@ -44,6 +45,7 @@ const initialState: OrderState = {
     column: '', // Default to no sorting
     order: 'asc',
   },
+  email: '', // Initialize email
 };
 
 // --- Async Thunks ---
@@ -64,9 +66,23 @@ export const fetchOrders = createAsyncThunk(
 
 export const placeOrder = createAsyncThunk(
   'orders/placeOrder',
-  async (payload: api.PlaceOrderPayload, { dispatch, rejectWithValue }) => {
+  // Remove emailId from payload type, we'll get it from state
+  async (payload: Omit<api.PlaceOrderPayload, 'emailId'>, { dispatch, getState, rejectWithValue }) => {
     try {
-      const response = await api.placeOrder(payload);
+      // Get email from the state
+      const state = getState() as RootState;
+      const emailId = state.orders.email;
+      if (!emailId) {
+        return rejectWithValue({ message: 'Email address is required.', type: 'VALIDATION_ERROR' });
+      }
+
+      // Construct the full payload including the email from state
+      const fullPayload: api.PlaceOrderPayload = {
+        ...payload,
+        emailId,
+      };
+
+      const response = await api.placeOrder(fullPayload);
       // After successful order placement, dispatch action to update product stock locally
       // The backend transaction should have already decremented it, this keeps FE state consistent
       dispatch(updateProductStock({ productId: payload.productId, change: -payload.quantity }));
@@ -124,6 +140,9 @@ const orderSlice = createSlice({
     clearOrderError: (state) => {
         state.error = null;
         state.placingOrder = 'idle'; // Reset placing status as well if error was related
+    },
+    setEmail: (state, action: PayloadAction<string>) => { // Add setEmail reducer
+      state.email = action.payload;
     },
     // Potentially add more simple sync reducers if necessary
   },
@@ -196,6 +215,7 @@ const orderSlice = createSlice({
 export const {
   setSorting,
   clearOrderError,
+  setEmail, // Export setEmail action
   // Removed direct setters like setOrders, addOrder, updateOrderStatus as they are handled by thunks
 } = orderSlice.actions;
 
@@ -207,5 +227,6 @@ export const selectOrdersError = (state: RootState) => state.orders.error;
 export const selectOrderSorting = (state: RootState) => state.orders.sorting;
 export const selectPlacingOrderStatus = (state: RootState) => state.orders.placingOrder;
 export const selectCancelingOrderStatus = (state: RootState, orderId: string) => state.orders.cancelingOrder[orderId] || 'idle';
+export const selectOrderEmail = (state: RootState) => state.orders.email; // Add email selector
 
 export default orderSlice.reducer; 
