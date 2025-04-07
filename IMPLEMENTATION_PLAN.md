@@ -40,7 +40,7 @@
 
 **Frontend Setup (React & Redux)**
 
-- [x] `app`: Install frontend dependencies: `react-router-dom`, `@reduxjs/toolkit`, `react-redux`, `redux-persist`, `axios` (or use fetch).
+- [x] `app`: Install frontend dependencies: `react-router-dom`, `@reduxjs/toolkit`, `react-redux`, `redux-persist`
 - [x] `app/src/store`: Set up Redux store using `configureStore`.
 - [x] `app/src/store/slices/productSlice.ts`: Create a Redux slice for managing products state (list, loading, error, filters, sorting).
 - [x] `app/src/store/slices/orderSlice.ts`: Create a Redux slice for managing orders state (list, loading, error, sorting).
