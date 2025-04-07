@@ -54,7 +54,7 @@ const OrderTable: React.FC<OrderTableProps> = ({ orders = [], onSort }) => {
 
      // Helper to get product price
     const getProductPrice = (order: Order): string => {
-        const price = typeof order.productId === 'object' ? order.productId.price : order.productDetails?.price;
+        const price = typeof order.productId === 'object' && order.productId !== null ? order.productId.price : order.productDetails?.price;
         return price !== undefined ? `$${price.toFixed(2)}` : 'N/A';
     };
 

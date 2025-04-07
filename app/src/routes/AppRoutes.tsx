@@ -2,12 +2,11 @@ import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import DashboardPage from '../pages/DashboardPage';
 import OrdersListPage from '../pages/OrdersListPage';
-import NavigationBar from '../components/NavigationBar';
 
 const AppRoutes: React.FC = () => {
   return (
     <>
-      <NavigationBar />
+      {/* <NavigationBar /> */}
       <div className="container mx-auto p-4"> {/* Optional: Add some layout padding */}
         <Routes>
           {/* Default route redirects to dashboard */}

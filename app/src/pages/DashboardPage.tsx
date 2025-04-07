@@ -20,6 +20,7 @@ const DashboardPage: React.FC = () => {
 
     const [email, setEmail] = useState('');
     const [deliveryDate, setDeliveryDate] = useState('');
+    const [quantity, setQuantity] = useState(1);
     const [orderError, setOrderError] = useState<string | null>(null);
 
     useEffect(() => {
@@ -54,13 +55,14 @@ const DashboardPage: React.FC = () => {
 
         const orderPayload = {
             productId,
-            quantity: 1,
+            quantity: quantity,
             emailId: email,
             deliveryDate,
         };
 
         try {
             await dispatch(placeOrder(orderPayload)).unwrap();
+            navigate('/orders');
         } catch (err: any) {
             setOrderError(err.message || 'Failed to place order. Please try again.');
         }
@@ -74,7 +76,7 @@ const DashboardPage: React.FC = () => {
             <div className="my-4 p-4 border rounded bg-gray-50">
                 <h3 className="text-lg font-semibold mb-2">Order Details</h3>
                 {(orderError || errorOrder) && (
-                    <p className="text-red-600 mb-2">Error: {orderError || errorOrder}</p>
+                    <p className="text-red-600 mb-2">Error: {orderError || (typeof errorOrder === 'string' ? errorOrder : errorOrder?.message)}</p>
                 )}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
@@ -99,6 +101,18 @@ const DashboardPage: React.FC = () => {
                             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                             required
                             min={new Date().toISOString().split('T')[0]}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="quantity" className="block text-sm font-medium text-gray-700">Quantity:</label>
+                        <input
+                            type="number"
+                            id="quantity"
+                            value={quantity}
+                            onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value, 10) || 1))}
+                            min="1"
+                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            required
                         />
                     </div>
                 </div>

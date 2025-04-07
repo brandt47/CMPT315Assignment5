@@ -36,7 +36,7 @@ export const findAllProducts = async (options: ProductQueryOptions = {}): Promis
         }
 
         // Build sort query
-        if (options.sort && ['name', 'price', 'stock'].includes(options.sort)) {
+        if (options.sort && ['name', 'price', 'stock', 'category'].includes(options.sort)) {
             const sortOrder: SortOrder = options.order === 'desc' ? -1 : 1;
             sort[options.sort] = sortOrder;
         } else {

@@ -11,7 +11,7 @@ const ProductFilter: React.FC = () => {
     const [selectedCategory, setSelectedCategory] = useState<string>(category || '');
 
     // TODO: Get categories dynamically from products or define them statically
-    const categories = ['Electronics', 'Clothing', 'Groceries', 'Books', 'Home']; // Example categories
+    const categories = ['Accessories', 'Electronics', 'Furniture', 'Stationery']; // Updated categories from seed data
 
     useEffect(() => {
         // Dispatch filter updates whenever local state changes
