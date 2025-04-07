@@ -40,13 +40,13 @@
 
 **Frontend Setup (React & Redux)**
 
-- [ ] `app`: Install frontend dependencies: `react-router-dom`, `@reduxjs/toolkit`, `react-redux`, `redux-persist`, `axios` (or use fetch).
-- [ ] `app/src/store`: Set up Redux store using `configureStore`.
-- [ ] `app/src/store/slices/productSlice.ts`: Create a Redux slice for managing products state (list, loading, error, filters, sorting).
-- [ ] `app/src/store/slices/orderSlice.ts`: Create a Redux slice for managing orders state (list, loading, error, sorting).
-- [ ] `app/src/store`: Configure `redux-persist` to save relevant parts of the state (like filters, potentially orders/products if desired for offline view) to Local Storage.
-- [ ] `app/src/routes/AppRoutes.tsx` (or similar): Define routes for `/dashboard`, `/order/:productId`, `/orders`. Make `/dashboard` the default route shown.
-- [ ] `app/src/components/NavigationBar.tsx`: Create a navigation component with links to Dashboard (`/dashboard`) and Orders (`/orders`). Integrate it into `App.tsx`.
+- [x] `app`: Install frontend dependencies: `react-router-dom`, `@reduxjs/toolkit`, `react-redux`, `redux-persist`, `axios` (or use fetch).
+- [x] `app/src/store`: Set up Redux store using `configureStore`.
+- [x] `app/src/store/slices/productSlice.ts`: Create a Redux slice for managing products state (list, loading, error, filters, sorting).
+- [x] `app/src/store/slices/orderSlice.ts`: Create a Redux slice for managing orders state (list, loading, error, sorting).
+- [x] `app/src/store`: Configure `redux-persist` to save relevant parts of the state (like filters, potentially orders/products if desired for offline view) to Local Storage.
+- [x] `app/src/routes/AppRoutes.tsx` (or similar): Define routes for `/dashboard`, `/order/:productId`, `/orders`. Make `/dashboard` the default route shown.
+- [x] `app/src/components/NavigationBar.tsx`: Create a navigation component with links to Dashboard (`/dashboard`) and Orders (`/orders`). Integrate it into `App.tsx`.
 
 **Frontend Implementation - Pages & Components**
 
