@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch } from '../../store/store';
-import { cancelOrder, selectCancelingOrderStatus } from '../../store/slices/orderSlice';
+import { AppDispatch } from '../../../store/store';
+import { cancelOrder, selectCancelingOrderStatus } from '../../../store/slices/orderSlice';
 
 interface CancelOrderButtonProps {
     orderId: string;

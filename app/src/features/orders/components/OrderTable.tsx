@@ -1,5 +1,5 @@
 import React from 'react';
-import { Order, selectOrderSorting } from '../../store/slices/orderSlice'; // Import Order type
+import { Order, selectOrderSorting } from '../../../store/slices/orderSlice'; // Import Order type
 import CancelOrderButton from './CancelOrderButton';
 import { useSelector } from 'react-redux';
 

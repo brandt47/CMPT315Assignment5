@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch } from '../../store/store';
-import { fetchOrders, selectAllOrders, selectOrdersLoading, selectOrdersError, selectOrderSorting, setSorting, Order } from '../../store/slices/orderSlice';
-import OrderTable from '../../features/orders/components/OrderTable';
+import { AppDispatch } from '../store/store';
+import { fetchOrders, selectAllOrders, selectOrdersLoading, selectOrdersError, selectOrderSorting, setSorting, Order } from '../store/slices/orderSlice';
+import OrderTable from '../features/orders/components/OrderTable';
 import { useNavigate } from 'react-router-dom';
 
 // Define SortableOrderColumn matching the one in OrderTable

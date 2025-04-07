@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../store/store';
-import { setFilterCategory, setFilterPriceGte, setFilterPriceLte, selectProductFilters, fetchProducts } from '../../store/slices/productSlice';
+import { AppDispatch, RootState } from '../../../store/store';
+import { setFilterCategory, setFilterPriceGte, setFilterPriceLte, selectProductFilters, fetchProducts } from '../../../store/slices/productSlice';
 
 const ProductFilter: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -20,9 +20,8 @@ const ProductFilter: React.FC = () => {
         dispatch(setFilterPriceGte(minPrice ? parseFloat(minPrice) : null));
         dispatch(setFilterPriceLte(maxPrice ? parseFloat(maxPrice) : null));
 
-        // OPTIONAL: Refetch products immediately on filter change
-        // Consider if this is desired or if a separate "Apply Filters" button is better
-        // dispatch(fetchProducts({ /* current filters and sorting */ }));
+        // Fetch products with the updated filters. Sorting parameters might be needed here too.
+        dispatch(fetchProducts({ category: selectedCategory || null, price_gte: minPrice ? parseFloat(minPrice) : null, price_lte: maxPrice ? parseFloat(maxPrice) : null }));
 
     }, [selectedCategory, minPrice, maxPrice, dispatch]);
 

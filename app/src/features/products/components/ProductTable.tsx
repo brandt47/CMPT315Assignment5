@@ -1,39 +1,27 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Product, setSorting, selectProductSorting } from '../../store/slices/productSlice';
+import { Product, setSorting, selectProductSorting } from '../../../store/slices/productSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch } from '../../store/store';
+import { AppDispatch } from '../../../store/store';
 
 interface ProductTableProps {
     products: Product[];
-    onSort: (column: keyof Product | '', order: 'asc' | 'desc') => void; // Callback for sorting
+    onSort: (column: keyof Product | '', order: 'asc' | 'desc') => void;
+    onOrder: (productId: string) => void;
+    isOrdering?: boolean;
 }
 
-const ProductTable: React.FC<ProductTableProps> = ({ products, onSort }) => {
-    const navigate = useNavigate();
+const ProductTable: React.FC<ProductTableProps> = ({ products, onSort, onOrder, isOrdering }) => {
     const dispatch = useDispatch<AppDispatch>();
     const { column: currentSortColumn, order: currentSortOrder } = useSelector(selectProductSorting);
-
-    const handleRowClick = (productId: string, stock: number) => {
-        if (stock > 0) {
-            navigate(`/order/${productId}`);
-        } else {
-            // Optionally provide feedback that the item is out of stock
-            console.log('Cannot order out-of-stock item.');
-            // Maybe disable row click visually as well (see styles)
-        }
-    };
 
     const handleSortClick = (column: keyof Product | '') => {
         let newOrder: 'asc' | 'desc' = 'asc';
         if (column === currentSortColumn) {
-            // If clicking the same column, toggle the order
             newOrder = currentSortOrder === 'asc' ? 'desc' : 'asc';
         } else {
-            // If clicking a new column, default to ascending
             newOrder = 'asc';
         }
-        onSort(column, newOrder); // Call the passed-in sorting handler
+        onSort(column, newOrder);
     };
 
     const renderSortArrow = (column: keyof Product | '') => {
@@ -44,87 +32,56 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, onSort }) => {
     };
 
     return (
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-            <thead>
-                <tr>
-                    <th onClick={() => handleSortClick('name')} style={styles.th}>
-                        Name {renderSortArrow('name')}
-                    </th>
-                    <th onClick={() => handleSortClick('price')} style={styles.th}>
-                        Price {renderSortArrow('price')}
-                    </th>
-                    <th onClick={() => handleSortClick('stock')} style={styles.th}>
-                        Stock {renderSortArrow('stock')}
-                    </th>
-                    <th onClick={() => handleSortClick('category')} style={styles.th}>
-                        Category {renderSortArrow('category')}
-                    </th>
-                    <th style={styles.th}>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {products.length === 0 ? (
+        <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
                     <tr>
-                        <td colSpan={5} style={{ textAlign: 'center', padding: '20px' }}>No products found.</td>
+                        <th onClick={() => handleSortClick('name')} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer">
+                            Name {renderSortArrow('name')}
+                        </th>
+                        <th onClick={() => handleSortClick('category')} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer">
+                            Category {renderSortArrow('category')}
+                        </th>
+                        <th onClick={() => handleSortClick('price')} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer">
+                            Price {renderSortArrow('price')}
+                        </th>
+                        <th onClick={() => handleSortClick('stock')} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer">
+                            Stock {renderSortArrow('stock')}
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                     </tr>
-                ) : (
-                    products.map((product) => (
-                        <tr
-                            key={product._id}
-                            style={product.stock === 0 ? styles.trDisabled : styles.tr}
-                            onClick={() => handleRowClick(product._id, product.stock)}
-                        >
-                            <td style={styles.td}>{product.name}</td>
-                            <td style={styles.td}>${product.price.toFixed(2)}</td>
-                            <td style={styles.td}>{product.stock}</td>
-                            <td style={styles.td}>{product.category}</td>
-                            <td style={styles.td}>
-                                <button
-                                    onClick={(e) => { e.stopPropagation(); handleRowClick(product._id, product.stock); }}
-                                    disabled={product.stock === 0}
-                                    style={styles.button}
-                                >
-                                    {product.stock > 0 ? 'Order' : 'Out of Stock'}
-                                </button>
-                            </td>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                    {products.length === 0 ? (
+                        <tr>
+                            <td colSpan={5} className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">No products found matching your criteria.</td>
                         </tr>
-                    ))
-                )}
-            </tbody>
-        </table>
+                    ) : (
+                        products.map((product) => (
+                            <tr key={product._id} className={`${product.stock === 0 ? 'bg-gray-100 opacity-70' : 'hover:bg-gray-50'}`}>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{product.name}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.category}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${product.price.toFixed(2)}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.stock}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <button
+                                        onClick={(e) => { 
+                                            e.stopPropagation();
+                                            onOrder(product._id);
+                                        }}
+                                        disabled={product.stock === 0 || isOrdering}
+                                        className={`px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium ${product.stock > 0 ? 'text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' : 'text-gray-500 bg-gray-200'} disabled:opacity-50 disabled:cursor-not-allowed`}
+                                    >
+                                        {isOrdering ? 'Ordering...' : (product.stock > 0 ? 'Order' : 'Out of Stock')}
+                                    </button>
+                                </td>
+                            </tr>
+                        ))
+                    )}
+                </tbody>
+            </table>
+        </div>
     );
 };
-
-// Basic styling (consider moving to CSS modules or styled-components)
-const styles: { [key: string]: React.CSSProperties } = {
-    th: {
-        borderBottom: '2px solid #ddd',
-        padding: '10px',
-        textAlign: 'left',
-        cursor: 'pointer',
-        backgroundColor: '#f2f2f2',
-    },
-    td: {
-        borderBottom: '1px solid #eee',
-        padding: '10px',
-    },
-    tr: {
-        cursor: 'pointer',
-        transition: 'background-color 0.2s ease',
-    },
-    trHover: { // You would need to add hover effects via CSS typically
-         backgroundColor: '#f9f9f9',
-    },
-    trDisabled: {
-        cursor: 'not-allowed',
-        backgroundColor: '#fafafa',
-        color: '#aaa',
-    },
-    button: {
-        padding: '5px 10px',
-        cursor: 'pointer',
-    },
-};
-
 
 export default ProductTable; 
