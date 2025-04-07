@@ -20,9 +20,6 @@ const ProductFilter: React.FC = () => {
         dispatch(setFilterPriceGte(minPrice ? parseFloat(minPrice) : null));
         dispatch(setFilterPriceLte(maxPrice ? parseFloat(maxPrice) : null));
 
-        // Fetch products with the updated filters. Sorting parameters might be needed here too.
-        dispatch(fetchProducts({ category: selectedCategory || null, price_gte: minPrice ? parseFloat(minPrice) : null, price_lte: maxPrice ? parseFloat(maxPrice) : null }));
-
     }, [selectedCategory, minPrice, maxPrice, dispatch]);
 
     const handleMinPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {

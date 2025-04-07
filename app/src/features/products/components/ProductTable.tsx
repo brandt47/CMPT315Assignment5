@@ -5,12 +5,11 @@ import { AppDispatch } from '../../../store/store';
 
 interface ProductTableProps {
     products: Product[];
-    onSort: (column: keyof Product | '', order: 'asc' | 'desc') => void;
     onOrder: (productId: string) => void;
     isOrdering?: boolean;
 }
 
-const ProductTable: React.FC<ProductTableProps> = ({ products, onSort, onOrder, isOrdering }) => {
+const ProductTable: React.FC<ProductTableProps> = ({ products, onOrder, isOrdering }) => {
     const dispatch = useDispatch<AppDispatch>();
     const { column: currentSortColumn, order: currentSortOrder } = useSelector(selectProductSorting);
 
@@ -21,7 +20,7 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, onSort, onOrder, 
         } else {
             newOrder = 'asc';
         }
-        onSort(column, newOrder);
+        dispatch(setSorting({ column, order: newOrder }));
     };
 
     const renderSortArrow = (column: keyof Product | '') => {

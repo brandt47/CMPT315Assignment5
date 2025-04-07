@@ -77,7 +77,7 @@ export const fetchProductById = createAsyncThunk(
 // If it does, this might not be needed or could be integrated differently.
 export const updateProductStock = createAsyncThunk(
     'products/updateStock',
-    async ({ productId, change }: { productId: string; change: number }, { getState, dispatch, rejectWithValue }) => {
+    async ({ productId, change }: { productId: string; change: number }) => {
         // We don't call an API endpoint here directly, this is for client-side state update.
         // Or, if needed, call a dedicated fetchProductById again.
         // Let's just update the local state for now for simplicity.

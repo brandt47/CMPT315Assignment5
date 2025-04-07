@@ -89,7 +89,7 @@ export const cancelOrder = createAsyncThunk(
     try {
       // Find the order details to get quantity and productId for stock restoration
       const state = getState() as RootState;
-      const orderToCancel = state.orders.items.find(order => order._id === orderId);
+      const orderToCancel = state.orders.items.find((order: Order) => order._id === orderId);
 
       if (!orderToCancel) {
         return rejectWithValue('Order not found locally.');
@@ -158,24 +158,31 @@ const orderSlice = createSlice({
       })
       // Cancel Order
       .addCase(cancelOrder.pending, (state, action) => {
-        const orderId = action.meta.arg; // Get orderId from thunk argument
-        state.cancelingOrder[orderId] = 'pending';
-        state.error = null; // Clear general error when starting cancellation
+        state.loading = 'pending'; // Set loading state for cancellation
+        // Optionally mark the specific order as 'cancelling'
       })
       .addCase(cancelOrder.fulfilled, (state, action: PayloadAction<{ orderId: string; updatedOrderData: Order }>) => {
         const { orderId, updatedOrderData } = action.payload;
         const index = state.items.findIndex(order => order._id === orderId);
         if (index !== -1) {
-          state.items[index] = updatedOrderData; // Replace with updated order data from API
-          // state.items[index].status = 'Canceled'; // Or just update status if API doesn't return full order
+            state.items[index] = updatedOrderData; // Update the order with the data from the backend
         }
-        state.cancelingOrder[orderId] = 'succeeded';
+        state.loading = 'succeeded';
+        state.error = null; // Clear any previous errors
       })
       .addCase(cancelOrder.rejected, (state, action) => {
-        const orderId = action.meta.arg;
-        state.cancelingOrder[orderId] = 'failed';
-        state.error = action.payload; // Set general error for cancellation failure
-        // Optionally store error per order ID: state.cancelError[orderId] = action.payload;
+        // The payload might be just an error message string or an object with a message
+        const errorMessage = typeof action.payload === 'string' ? action.payload :
+                             (action.payload as any)?.message || 'Failed to cancel order';
+        state.error = { message: errorMessage }; // Store error message
+        state.loading = 'failed';
+        // Find the order that failed to cancel and potentially revert its state if needed
+        // This depends on how you handle pending states in the UI
+        // const orderId = action.meta.arg; // Get the order ID from the action meta
+        // const orderToRevert = state.items.find(order => order._id === orderId);
+        // if (orderToRevert) {
+        //   // Revert any optimistic UI updates if necessary
+        // }
       });
   },
 });
